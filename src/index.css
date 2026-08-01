@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-warm-bg: #f6f1e9;
+  --color-warm-surface: #fffdf9;
+  --color-warm-ink: #33302b;
+  --color-warm-muted: #8c8375;
+  --color-warm-gold: #b08d57;
+  --color-warm-gold-soft: #d9c6a6;
+  --color-warm-gold-deep: #8a6d3b;
+  --color-warm-line: #e8ddcc;
+
+  --font-serif: "Frank Ruhl Libre", Georgia, serif;
+  --font-sans: "Assistant", "Segoe UI", sans-serif;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-warm-bg);
+  color: var(--color-warm-ink);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.serif {
+  font-family: var(--font-serif);
+}
