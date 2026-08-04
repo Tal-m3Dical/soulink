@@ -38,6 +38,14 @@ h1{
 }
 .rule{width:2.75rem;height:2px;background:var(--gold);border:0;border-radius:2px;margin:0 auto 1.75rem}
 .lede{color:var(--muted);font-size:1.0625rem;margin:0 auto 2.5rem;max-width:26rem}
+.whats-new{text-align:start;margin:0 0 1.5rem}
+.whats-new h2{font-size:.9375rem;font-weight:600;margin:0 0 .75rem;text-align:center;color:var(--muted)}
+.whats-new ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.625rem}
+.whats-new li{
+  background:var(--surface);border:1px solid var(--line);border-radius:.75rem;
+  padding:.875rem 1.125rem;font-size:.9375rem;color:var(--muted);line-height:1.65;
+}
+.whats-new strong{color:var(--ink);font-weight:600}
 .contact{background:var(--surface);border:1px solid var(--line);border-radius:1rem;padding:1.5rem}
 .contact h2{font-size:1rem;font-weight:600;margin:0 0 .25rem}
 .contact p{color:var(--muted);font-size:.9375rem;margin:0 0 1.25rem}
@@ -83,6 +91,24 @@ export default function ComingSoon() {
             האתר יחזור לאוויר בקרוב.
           </p>
 
+          <div className="whats-new">
+            <h2>מה מחכה לכם</h2>
+            <ul>
+              <li>
+                <strong>בנייה עצמית</strong> — תוכלו לבנות ולערוך את עמוד הזיכרון
+                בעצמכם, בקצב שלכם, ולעדכן אותו בכל עת.
+              </li>
+              <li>
+                <strong>או שנבנה עבורכם</strong> — כמו תמיד. שולחים לנו את החומרים
+                ואנחנו מרכיבים הכל.
+              </li>
+              <li>
+                <strong>מגוון עיצובים</strong> — כמה תבניות לבחירה, כדי שהעמוד
+                יתאים לאדם שהוא מנציח.
+              </li>
+            </ul>
+          </div>
+
           <div className="contact">
             <h2>רוצים שנחזור אליכם?</h2>
             <p>אפשר ליצור קשר ישירות, ונשמח לעדכן אתכם כשהאתר עולה.</p>
@@ -100,21 +126,17 @@ export default function ComingSoon() {
 
       <footer>
         <div className="foot-inner">
-          <h2>הצהרת נגישות</h2>
-          <p>
-            עמוד זה נבנה בהתאם לתקן הישראלי ת"י 5568 ברמה AA (מבוסס WCAG 2.1):
-            ניווט מלא במקלדת, סימון פוקוס ברור, מבנה סמנטי, תמיכה בהקטנה והגדלה של
-            טקסט, כיבוד העדפת הפחתת תנועה, וניגודיות צבעים של 4.5:1 לפחות.
-            רכז הנגישות: טל וינר־קציר · טלפון:{' '}
-            <a className="ltr" href="tel:+972528983514">+972-52-8983514</a> · דוא"ל:{' '}
-            <a href="mailto:info@talkats.com">info@talkats.com</a>.
-            נטפל בכל פנייה בנושא נגישות תוך 14 ימי עסקים לכל היותר.
-          </p>
-
-          <h2>פרטיות</h2>
           <p>
             עמוד זה אינו אוסף מידע אישי, אינו משתמש בעוגיות ואינו מפעיל כלי ניתוח
             או מעקב. לא נשלחת ממנו בקשה לשום שירות צד שלישי.
+          </p>
+          <p>
+            <a href="/legal">מידע משפטי</a> — מדיניות פרטיות, תנאי שימוש והצהרת
+            נגישות (ת"י 5568 ברמה AA).
+            <br />
+            רכז נגישות: טל וינר־קציר · טלפון:{' '}
+            <a className="ltr" href="tel:+972528983514">+972-52-8983514</a> · דוא"ל:{' '}
+            <a href="mailto:info@talkats.com">info@talkats.com</a>
           </p>
 
           <p className="copyright">© {new Date().getFullYear()} Soulink by Tal m3Dical</p>

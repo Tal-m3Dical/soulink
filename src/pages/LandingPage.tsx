@@ -130,7 +130,7 @@ export default function LandingPage() {
               אני רוצה עמוד זיכרון
             </a>
             <a
-              href="/shula-tzivoni"
+              href="/israela-israeli"
               className="py-3.5 px-8 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[17px] no-underline hover:bg-warm-gold hover:text-white transition-colors"
             >
               צפו בדוגמה חיה
@@ -174,7 +174,7 @@ export default function LandingPage() {
 
           <div className="mx-auto max-w-[375px] rounded-[2rem] border-4 border-warm-line shadow-2xl overflow-hidden bg-warm-bg" style={{ height: 680 }}>
             <iframe
-              src="/shula-tzivoni"
+              src="/israela-israeli"
               className="w-full h-full border-0"
               title="דוגמת עמוד זיכרון"
             />
