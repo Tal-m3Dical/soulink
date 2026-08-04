@@ -21,7 +21,7 @@ export default function GalleryBlock({ media }: Props) {
           <button
             key={photo.id}
             onClick={() => setLightboxIndex(i)}
-            className="aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-[#efe6d5] to-[#e2d4bd] transition-transform hover:-translate-y-0.5 hover:shadow-lg cursor-pointer border-0 p-0"
+            className="aspect-square rounded-xl overflow-hidden bg-warm-gold-soft transition-transform hover:-translate-y-0.5 hover:shadow-lg cursor-pointer border-0 p-0"
           >
             <img
               src={photo.url}

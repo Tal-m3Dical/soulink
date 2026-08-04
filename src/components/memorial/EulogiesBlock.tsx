@@ -21,7 +21,7 @@ export default function EulogiesBlock({ config }: Props) {
           {eulogies.map((eulogy, i) => (
             <blockquote
               key={i}
-              className="serif text-[17px] text-[#4a453d] border-s-[3px] border-warm-gold-soft ps-4 my-0"
+              className="serif text-[17px] text-warm-ink border-s-[3px] border-warm-gold-soft ps-4 my-0"
             >
               "{eulogy.text}"
               <cite className="block mt-2 text-warm-gold text-sm not-italic">

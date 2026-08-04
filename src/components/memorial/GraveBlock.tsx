@@ -41,7 +41,7 @@ export default function GraveBlock({ memorial }: Props) {
             title="מיקום הקבר"
           />
         ) : (
-          <div className="h-[200px] rounded-xl bg-[repeating-linear-gradient(45deg,#ece3d2,#ece3d2_14px,#e6dcc8_14px,#e6dcc8_28px)] border border-warm-line flex items-center justify-center text-warm-muted">
+          <div className="h-[200px] rounded-xl bg-warm-surface border border-warm-line flex items-center justify-center text-warm-muted">
             מפה · הזינו קואורדינטות
           </div>
         )}
@@ -51,7 +51,7 @@ export default function GraveBlock({ memorial }: Props) {
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 min-w-[150px] text-center no-underline py-3 px-4 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[15px] hover:bg-warm-gold hover:text-white transition-colors"
+            className="flex-1 min-w-[150px] text-center no-underline py-3 px-4 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[15px] hover:bg-warm-gold hover:text-warm-on-gold transition-colors"
           >
             ניווט ב-Google
           </a>
@@ -59,7 +59,7 @@ export default function GraveBlock({ memorial }: Props) {
             href={wazeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 min-w-[150px] text-center no-underline py-3 px-4 rounded-full border-[1.5px] border-[#7a8a63] text-[#6d7d57] font-semibold text-[15px] hover:bg-[#6d7d57] hover:text-white transition-colors"
+            className="flex-1 min-w-[150px] text-center no-underline py-3 px-4 rounded-full border-[1.5px] border-warm-route text-warm-route font-semibold text-[15px] hover:bg-warm-route hover:text-warm-bg transition-colors"
           >
             ניווט ב-Waze
           </a>

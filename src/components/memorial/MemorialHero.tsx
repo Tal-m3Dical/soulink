@@ -14,12 +14,15 @@ export default function MemorialHero({ memorial }: Props) {
       style={
         hasImage
           ? { backgroundImage: `url(${memorial.header_image_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-          : { background: 'linear-gradient(150deg, #d9cbb0, #c9b591 55%, #b89f77)' }
+          : { background: 'linear-gradient(150deg, var(--color-warm-gold-soft), var(--color-warm-line))' }
       }
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
+      {/* The family uploads this photo, so it can be any brightness. The scrim
+          has to be dark enough that the white name below clears 4.5:1 even over
+          a white sky, which is why it is heavier than it looks like it needs. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       <div className="relative z-10 pb-8 text-white">
-        <div className="serif text-sm tracking-[0.22em] text-warm-gold-soft mb-2 font-semibold">
+        <div className="serif text-sm tracking-[0.22em] text-white/85 mb-2 font-semibold">
           {getDedicationText(memorial.gender)}
         </div>
         <h1 className="serif text-[clamp(30px,7vw,46px)] font-medium leading-tight drop-shadow-[0_2px_20px_rgba(0,0,0,0.25)]">

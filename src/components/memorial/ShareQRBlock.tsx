@@ -45,7 +45,7 @@ export default function ShareQRBlock({ memorial }: Props) {
       <div className="mt-4 flex gap-3 justify-center flex-wrap">
         <button
           onClick={handleShare}
-          className="py-2.5 px-6 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[15px] bg-transparent hover:bg-warm-gold hover:text-white transition-colors cursor-pointer"
+          className="py-2.5 px-6 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[15px] bg-transparent hover:bg-warm-gold hover:text-warm-on-gold transition-colors cursor-pointer"
         >
           {shareSupported ? 'שיתוף' : 'העתקת קישור'}
         </button>
@@ -53,7 +53,7 @@ export default function ShareQRBlock({ memorial }: Props) {
           href={`https://wa.me/?text=${encodeURIComponent(pageUrl)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="py-2.5 px-6 rounded-full border-[1.5px] border-[#25D366] text-[#25D366] font-semibold text-[15px] no-underline hover:bg-[#25D366] hover:text-white transition-colors"
+          className="py-2.5 px-6 rounded-full border-[1.5px] border-warm-share text-warm-share font-semibold text-[15px] no-underline hover:bg-warm-share hover:text-warm-bg transition-colors"
         >
           WhatsApp
         </a>

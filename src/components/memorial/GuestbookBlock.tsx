@@ -75,7 +75,7 @@ export default function GuestbookBlock({ memorial }: Props) {
           <button
             type="submit"
             disabled={submitting || !name.trim() || !message.trim()}
-            className="self-start py-2.5 px-6 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[15px] bg-transparent hover:bg-warm-gold hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            className="self-start py-2.5 px-6 rounded-full border-[1.5px] border-warm-gold text-warm-gold font-semibold text-[15px] bg-transparent hover:bg-warm-gold hover:text-warm-on-gold transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
             {submitting ? 'שולח...' : 'שלחו'}
           </button>
@@ -99,7 +99,7 @@ export default function GuestbookBlock({ memorial }: Props) {
                     ♥ {entry.likes > 0 && entry.likes}
                   </button>
                 </div>
-                <p className="text-[15px] text-[#4a453d] mt-1">{entry.message}</p>
+                <p className="text-[15px] text-warm-ink mt-1">{entry.message}</p>
               </div>
             ))}
           </div>

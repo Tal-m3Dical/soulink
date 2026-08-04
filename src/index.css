@@ -1,17 +1,77 @@
 @import "tailwindcss";
 
+/* Four memorial templates. The components never name a theme — they use the
+   warm-* tokens, and each [data-theme] block below re-points those tokens.
+   Adding a fifth template means adding one block here, nothing else.
+
+   Every colour pair here was checked against WCAG AA (4.5:1). Note
+   --color-warm-on-gold: on the light templates the accent is dark so text on
+   it is white, but on `evening` the accent is a pale gold and white would land
+   at 1.88:1 — there the text on the accent is the dark background colour. */
+
 @theme {
+  /* default = the `warm` template */
   --color-warm-bg: #f6f1e9;
   --color-warm-surface: #fffdf9;
-  --color-warm-ink: #33302b;
-  --color-warm-muted: #8c8375;
-  --color-warm-gold: #b08d57;
-  --color-warm-gold-soft: #d9c6a6;
-  --color-warm-gold-deep: #8a6d3b;
-  --color-warm-line: #e8ddcc;
+  --color-warm-ink: #2e2a24;        /* 12.68:1 on bg */
+  --color-warm-muted: #5c554a;      /*  6.55:1 on bg */
+  --color-warm-gold: #7a5c2b;       /*  5.50:1 on bg */
+  --color-warm-gold-soft: #e0d0b4;
+  --color-warm-gold-deep: #5e4520;
+  --color-warm-on-gold: #ffffff;    /*  6.19:1 on gold */
+  --color-warm-line: #e2d8c8;
+  --color-warm-route: #3f6b57;      /* waze/maps action */
+  --color-warm-share: #146c43;      /* whatsapp action */
 
-  --font-serif: "Frank Ruhl Libre", Georgia, serif;
-  --font-sans: "Assistant", "Segoe UI", sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans: "Assistant", "Segoe UI", "Arial Hebrew", Arial, sans-serif;
+  --font-display: Georgia, "Times New Roman", serif;
+}
+
+/* לבן ומינימלי — the photograph carries the page, the type gets out of the way */
+[data-theme="light"] {
+  --color-warm-bg: #ffffff;
+  --color-warm-surface: #f7f7f6;
+  --color-warm-ink: #1c1c1b;        /* 17.06:1 */
+  --color-warm-muted: #5a5a57;      /*  6.92:1 */
+  --color-warm-gold: #4a5568;       /*  7.53:1 — slate, not gold */
+  --color-warm-gold-soft: #dfe3ea;
+  --color-warm-gold-deep: #363f4e;
+  --color-warm-on-gold: #ffffff;    /*  7.53:1 */
+  --color-warm-line: #e6e6e3;
+  --color-warm-route: #3f6b57;
+  --color-warm-share: #146c43;
+  --font-display: "Assistant", "Segoe UI", "Arial Hebrew", Arial, sans-serif;
+}
+
+/* כהה וערבי — evening light, as if a candle is lit next to the screen */
+[data-theme="evening"] {
+  --color-warm-bg: #1a1815;
+  --color-warm-surface: #242019;
+  --color-warm-ink: #f2eee6;        /* 15.31:1 */
+  --color-warm-muted: #b8af9d;      /*  8.15:1 */
+  --color-warm-gold: #dcb877;       /*  9.42:1 */
+  --color-warm-gold-soft: #4a4132;
+  --color-warm-gold-deep: #f0d5a0;
+  --color-warm-on-gold: #1a1815;    /*  9.42:1 — dark text on the pale accent */
+  --color-warm-line: #3a352c;
+  --color-warm-route: #9ccbb0;
+  --color-warm-share: #86d6a6;
+}
+
+/* אבן ומסורת — Jerusalem stone, quieter and less golden than `warm` */
+[data-theme="stone"] {
+  --color-warm-bg: #f2ede4;
+  --color-warm-surface: #fbf8f2;
+  --color-warm-ink: #2b2723;        /* 12.71:1 */
+  --color-warm-muted: #575149;      /*  6.72:1 */
+  --color-warm-gold: #6b5847;       /*  5.79:1 */
+  --color-warm-gold-soft: #ddd0bd;
+  --color-warm-gold-deep: #4f4034;
+  --color-warm-on-gold: #ffffff;    /*  6.75:1 */
+  --color-warm-line: #ddd4c6;
+  --color-warm-route: #3f6b57;
+  --color-warm-share: #146c43;
 }
 
 html {
@@ -28,5 +88,23 @@ body {
 }
 
 .serif {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
+}
+
+/* Keyboard focus must stay visible on every template, including the dark one. */
+:focus-visible {
+  outline: 3px solid var(--color-warm-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
