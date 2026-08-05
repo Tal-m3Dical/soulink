@@ -1,37 +1,44 @@
-// Template picker. Renders the same sample memorial in every template so the
-// family can see the real thing before choosing, rather than a swatch.
+// Template picker. Two independent axes — layout and palette — so the family
+// picks where things sit and what colour they are separately. Renders the same
+// fictional sample in every combination rather than showing swatches.
 //
-// Not routed in production yet — the site is still on the holding page.
+// Unlinked in production while the site is paused.
 
 import { useEffect, useState } from 'react'
-import MemorialRenderer, { TEMPLATES, type Template } from '@/components/memorial/MemorialRenderer'
+import MemorialRenderer from '@/components/memorial/MemorialRenderer'
+import {
+  LAYOUTS, PALETTES, LAYOUT_LABELS, PALETTE_LABELS, formatTemplate,
+  type Layout, type Palette,
+} from '@/components/memorial/layouts'
 import { SAMPLE_DATA } from '@/lib/sample-memorial'
 
-const LABELS: Record<Template, { name: string; blurb: string }> = {
-  warm: { name: 'חם וקלאסי', blurb: 'שמנת וזהב, אותיות סריף. שקט ומכובד.' },
-  light: { name: 'לבן ומינימלי', blurb: 'הרבה מרחב לבן, טיפוגרפיה דקה. התמונה היא הכל.' },
-  evening: { name: 'כהה וערבי', blurb: 'רקע כהה עם אור רך של נר. אינטימי.' },
-  stone: { name: 'אבן ומסורת', blurb: 'גווני אבן ירושלמית, אופי מסורתי.' },
+const SWATCH: Record<Palette, string> = {
+  warm: '#c9ac78',
+  light: '#c8ccd4',
+  evening: '#2b2620',
+  stone: '#c3b49c',
+  sea: '#5b87a8',
+  sage: '#7f9c82',
 }
 
 const CSS = `
-.tpl-bar{
-  position:sticky;top:0;z-index:50;
-  background:#ffffff;border-bottom:1px solid #e2ddd4;
-  padding:.875rem 1.25rem;
-}
-.tpl-bar-inner{max-width:60rem;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
-.tpl-bar h1{font-family:Georgia,serif;font-size:1.0625rem;font-weight:500;margin:0;margin-inline-end:auto;color:#2e2a24}
-.tpl-btn{
-  padding:.5rem 1rem;border-radius:999px;border:1.5px solid #7a5c2b;
-  background:transparent;color:#7a5c2b;font:inherit;font-size:.875rem;font-weight:600;cursor:pointer;
-}
+.tpl-bar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e2ddd4;padding:.75rem 1.25rem}
+.tpl-row{max-width:64rem;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.tpl-row + .tpl-row{margin-top:.5rem}
+.tpl-legend{font-size:.8125rem;color:#5c554a;min-width:4.5rem}
+.tpl-btn{padding:.4375rem .875rem;border-radius:999px;border:1.5px solid #7a5c2b;background:transparent;
+  color:#7a5c2b;font:inherit;font-size:.8125rem;font-weight:600;cursor:pointer}
 .tpl-btn[aria-pressed="true"]{background:#7a5c2b;color:#fff}
-.tpl-meta{max-width:60rem;margin:0 auto;padding:.5rem 1.25rem 0;font-size:.875rem;color:#5c554a}
+.tpl-sw{display:inline-flex;align-items:center;gap:.4375rem}
+.tpl-dot{width:.75rem;height:.75rem;border-radius:50%;border:1px solid rgba(0,0,0,.25)}
+.tpl-note{max-width:64rem;margin:.5rem auto 0;font-size:.8125rem;color:#5c554a}
+.tpl-note code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tpl-btn:focus-visible{outline:3px solid #7a5c2b;outline-offset:2px}
 `
 
 export default function TemplatesPage() {
-  const [active, setActive] = useState<Template>('warm')
+  const [layout, setLayout] = useState<Layout>('classic')
+  const [palette, setPalette] = useState<Palette>('warm')
 
   useEffect(() => {
     const previous = document.title
@@ -44,27 +51,43 @@ export default function TemplatesPage() {
       <style>{CSS}</style>
 
       <div className="tpl-bar">
-        <div className="tpl-bar-inner">
-          <h1>בחירת תבנית</h1>
-          {TEMPLATES.map((t) => (
-            <button
-              key={t}
-              type="button"
-              className="tpl-btn"
-              aria-pressed={active === t}
-              onClick={() => setActive(t)}
-            >
-              {LABELS[t].name}
+        <div className="tpl-row">
+          <span className="tpl-legend" id="lbl-layout">פריסה</span>
+          {LAYOUTS.map((l) => (
+            <button key={l} type="button" className="tpl-btn"
+              aria-pressed={layout === l} aria-describedby="lbl-layout"
+              onClick={() => setLayout(l)}>
+              {LAYOUT_LABELS[l].name}
             </button>
           ))}
         </div>
-        <p className="tpl-meta">{LABELS[active].blurb}</p>
+
+        <div className="tpl-row">
+          <span className="tpl-legend" id="lbl-palette">צבע</span>
+          {PALETTES.map((p) => (
+            <button key={p} type="button" className="tpl-btn"
+              aria-pressed={palette === p} aria-describedby="lbl-palette"
+              onClick={() => setPalette(p)}>
+              <span className="tpl-sw">
+                <span className="tpl-dot" style={{ background: SWATCH[p] }} aria-hidden="true" />
+                {PALETTE_LABELS[p]}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <p className="tpl-note">
+          {LAYOUT_LABELS[layout].blurb} · <code>{formatTemplate(layout, palette)}</code>
+        </p>
       </div>
 
       <div aria-live="polite">
         <MemorialRenderer
-          key={active}
-          data={{ ...SAMPLE_DATA, memorial: { ...SAMPLE_DATA.memorial, theme: active } }}
+          key={formatTemplate(layout, palette)}
+          data={{
+            ...SAMPLE_DATA,
+            memorial: { ...SAMPLE_DATA.memorial, theme: formatTemplate(layout, palette) },
+          }}
         />
       </div>
     </>

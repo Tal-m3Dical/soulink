@@ -12,6 +12,7 @@ import GuestbookBlock from './GuestbookBlock'
 import ShareQRBlock from './ShareQRBlock'
 import FamilyLinkBlock from './FamilyLinkBlock'
 import MemorialFooter from './MemorialFooter'
+import { parseTemplate, orderForLayout } from './layouts'
 
 interface Props {
   data: {
@@ -34,48 +35,46 @@ const COMPONENT_MAP: Record<string, React.ComponentType<Record<string, unknown>>
   family_links: FamilyLinkBlock,
 }
 
-// Templates the customer can choose between. `warm` is the fallback for any
-// memorial saved before templates existed, or with an unrecognised value.
-export const TEMPLATES = ['warm', 'light', 'evening', 'stone'] as const
-export type Template = (typeof TEMPLATES)[number]
-
-export function resolveTemplate(theme: string | null | undefined): Template {
-  return (TEMPLATES as readonly string[]).includes(theme ?? '')
-    ? (theme as Template)
-    : 'warm'
-}
-
 export default function MemorialRenderer({ data }: Props) {
   const { memorial, components, media, links } = data
-  const template = resolveTemplate(memorial.theme)
+  const { layout, palette } = parseTemplate(memorial.theme)
 
   // Set on <html> rather than a wrapper so body inherits it too — otherwise the
-  // dark template shows a cream overscroll band above and below the page.
+  // dark palette shows a light overscroll band above and below the page.
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', template)
-    return () => document.documentElement.removeAttribute('data-theme')
-  }, [template])
+    document.documentElement.setAttribute('data-palette', palette)
+    return () => document.documentElement.removeAttribute('data-palette')
+  }, [palette])
+
+  const blocks = orderForLayout(components, layout).map((comp) => {
+    const Component = COMPONENT_MAP[comp.component_key]
+    if (!Component) return null
+    return (
+      <div key={comp.id} className="mem-block" data-block={comp.component_key}>
+        <Component memorial={memorial} config={comp.config} media={media} links={links} />
+      </div>
+    )
+  })
 
   return (
-    <div className="min-h-screen bg-warm-bg" data-theme={template}>
+    <div className="min-h-screen bg-warm-bg" data-palette={palette} data-layout={layout}>
       <MemorialHero memorial={memorial} />
-      <IdentityBlock memorial={memorial} />
 
-      <div className="max-w-[760px] mx-auto px-5">
-        {components.map((comp) => {
-          const Component = COMPONENT_MAP[comp.component_key]
-          if (!Component) return null
-          return (
-            <Component
-              key={comp.id}
-              memorial={memorial}
-              config={comp.config}
-              media={media}
-              links={links}
-            />
-          )
-        })}
-      </div>
+      {layout === 'split' ? (
+        // The one layout that needs a different DOM, not just different CSS:
+        // identity has to be a sibling column so it can stick while content scrolls.
+        <div className="mem-split">
+          <aside className="mem-split-aside">
+            <IdentityBlock memorial={memorial} />
+          </aside>
+          <div className="mem-split-main">{blocks}</div>
+        </div>
+      ) : (
+        <>
+          <IdentityBlock memorial={memorial} />
+          <div className="mem-flow">{blocks}</div>
+        </>
+      )}
 
       <MemorialFooter />
     </div>
