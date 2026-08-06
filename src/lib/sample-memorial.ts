@@ -22,7 +22,7 @@ export const SAMPLE_MEMORIAL: Memorial = {
     'נולדה בחיפה, גדלה בין הים להרים, ולימדה מתמטיקה ארבעים שנה.\n' +
     'אהבה גינון, קפה חזק בבוקר, ולשבת עם כל הנכדים סביב שולחן אחד.\n' +
     'מי שהכיר אותה יודע שהיא לא ידעה לומר "לא" לאף אחד שביקש עזרה.',
-  header_image_url: null,
+  header_image_url: '/demo/hero.webp',
   grave_plot: 'חלקה 12',
   grave_row: 'שורה 4',
   town: 'תל אביב',
@@ -56,39 +56,29 @@ export const SAMPLE_COMPONENTS: MemorialComponent[] = [
   { id: 'c7', memorial_id: 'sample', component_key: 'share_qr', enabled: true, sort_order: 7, config: {} },
 ]
 
-// Placeholder tiles drawn inline rather than fetched, so the picker renders
-// with no network and no stock-photo licensing. They only exist to show how a
-// layout arranges photographs — the family's real album replaces them.
-function tile(a: string, b: string, label: string): string {
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">` +
-    `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">` +
-    `<stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/>` +
-    `</linearGradient></defs>` +
-    `<rect width="400" height="400" fill="url(#g)"/>` +
-    `<circle cx="200" cy="165" r="52" fill="rgba(255,255,255,0.34)"/>` +
-    `<path d="M92 330c0-58 48-98 108-98s108 40 108 98z" fill="rgba(255,255,255,0.34)"/>` +
-    `<text x="200" y="380" text-anchor="middle" font-family="Georgia,serif" font-size="22"` +
-    ` fill="rgba(255,255,255,0.85)">${label}</text></svg>`
-  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg)
-}
-
-const TILES: Array<[string, string, string]> = [
-  ['#c9b591', '#a88d63', 'תמונה'],
-  ['#9fb4c4', '#6d8ba3', 'תמונה'],
-  ['#b6c3ac', '#8aa07f', 'תמונה'],
-  ['#cbb6b0', '#a68b83', 'תמונה'],
-  ['#bdb2c6', '#94879f', 'תמונה'],
-  ['#c7c2b4', '#a09a89', 'תמונה'],
-  ['#d0bfa4', '#b09a75', 'תמונה'],
+// Demo photographs in public/demo/. Generated locally (SwarmUI, Z-Image Turbo)
+// rather than taken from a stock library — no licence to track, and nothing here
+// depicts a real person or a real grave. Life-texture shots carry most of it;
+// one portrait is enough to show how each layout treats a face.
+//
+// Captions are real alt text, not filler: the gallery renders them into alt=,
+// so an empty caption means a screen reader hears nothing.
+const PHOTOS: Array<[string, string]> = [
+  ['portrait', 'ישראלה יושבת ליד החלון, מביטה החוצה ומחייכת'],
+  ['coffee', 'ידיה של ישראלה אוחזות בספל קפה שחור על שולחן המטבח'],
+  ['garden', 'הגינה שלה, ורדים ומזלף השקיה ירוק בין עציצי חרס'],
+  ['chalkboard', 'לוח ירוק בכיתה ריקה עם תרגילי מתמטיקה בכתב ידה'],
+  ['sea', 'ספסל ריק מול הים בטיילת, בשעת בין ערביים'],
+  ['table', 'שולחן האוכל המשפחתי ערוך, הכיסאות ריקים'],
+  ['letters', 'ערימת מכתבים בכתב יד ואלבום תמונות ישן'],
 ]
 
-export const SAMPLE_MEDIA: Media[] = TILES.map(([a, b, label], i) => ({
+export const SAMPLE_MEDIA: Media[] = PHOTOS.map(([name, caption], i) => ({
   id: `m${i}`,
   memorial_id: 'sample',
   type: 'photo' as const,
-  url: tile(a, b, label),
-  caption: null,
+  url: `/demo/${name}.webp`,
+  caption,
   sort_order: i,
 }))
 
