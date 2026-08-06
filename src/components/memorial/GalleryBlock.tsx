@@ -1,15 +1,23 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import type { Media } from '@/lib/types'
 
 interface Props {
   media: Media[]
+  /** Tile dropped into the photo grid instead of sitting in its own section
+   *  below it. The mosaic layout passes the video here so the wall reads as
+   *  photos, video, more photos. Other layouts leave it undefined. */
+  inlineTile?: ReactNode
+  /** How many photos come before the inline tile. */
+  inlineAfter?: number
 }
 
-export default function GalleryBlock({ media }: Props) {
+export default function GalleryBlock({ media, inlineTile, inlineAfter = 2 }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const photos = media.filter((m) => m.type === 'photo')
 
   if (photos.length === 0) return null
+
+  const cut = inlineTile ? Math.min(Math.max(inlineAfter, 0), photos.length) : photos.length
 
   return (
     <section className="py-8">
@@ -17,10 +25,27 @@ export default function GalleryBlock({ media }: Props) {
       <div className="w-11 h-0.5 bg-warm-gold rounded mb-4" />
 
       <div className="grid grid-cols-3 max-sm:grid-cols-2 gap-3">
-        {photos.map((photo, i) => (
+        {photos.slice(0, cut).map((photo, i) => (
           <button
             key={photo.id}
             onClick={() => setLightboxIndex(i)}
+            className="aspect-square rounded-xl overflow-hidden bg-warm-gold-soft transition-transform hover:-translate-y-0.5 hover:shadow-lg cursor-pointer border-0 p-0"
+          >
+            <img
+              src={photo.url}
+              alt={photo.caption || ''}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </button>
+        ))}
+
+        {inlineTile && <div className="mem-inline-tile">{inlineTile}</div>}
+
+        {photos.slice(cut).map((photo, i) => (
+          <button
+            key={photo.id}
+            onClick={() => setLightboxIndex(cut + i)}
             className="aspect-square rounded-xl overflow-hidden bg-warm-gold-soft transition-transform hover:-translate-y-0.5 hover:shadow-lg cursor-pointer border-0 p-0"
           >
             <img

@@ -173,6 +173,16 @@ body {
   }
 }
 
+/* The video tile inside the photo wall. Wider than a photo so it keeps a
+   video aspect instead of being squeezed into a square. */
+.mem-inline-tile { aspect-ratio: 1 / 1; }
+@media (min-width: 700px) {
+  [data-layout="mosaic"] .mem-inline-tile {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+  }
+}
+
 /* ציר חיים — a rail down the side with a marker per block. */
 [data-layout="timeline"] .mem-flow { max-width: 820px; position: relative; }
 @media (min-width: 640px) {
@@ -187,6 +197,26 @@ body {
   [data-layout="timeline"] .mem-block {
     position: relative;
     padding-inline-start: 3rem;
+  }
+  [data-layout="timeline"] .mem-rail-cap {
+    position: relative;
+    margin: 0;
+    padding-inline-start: 3rem;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    color: var(--color-warm-gold);
+    letter-spacing: 0.04em;
+  }
+  [data-layout="timeline"] .mem-rail-cap::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0.375rem;
+    top: 0.55rem;
+    width: 1.0625rem;
+    height: 1.0625rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-warm-gold);
+    background: var(--color-warm-bg);
   }
   [data-layout="timeline"] .mem-block::before {
     content: "";

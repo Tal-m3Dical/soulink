@@ -4,7 +4,7 @@ import MemorialHero from './MemorialHero'
 import IdentityBlock from './IdentityBlock'
 import BioBlock from './BioBlock'
 import GalleryBlock from './GalleryBlock'
-import YouTubeBlock from './YouTubeBlock'
+import YouTubeBlock, { YouTubeTile } from './YouTubeBlock'
 import EulogiesBlock from './EulogiesBlock'
 import GraveBlock from './GraveBlock'
 import CandleBlock from './CandleBlock'
@@ -46,15 +46,25 @@ export default function MemorialRenderer({ data }: Props) {
     return () => document.documentElement.removeAttribute('data-palette')
   }, [palette])
 
-  const blocks = orderForLayout(components, layout).map((comp) => {
-    const Component = COMPONENT_MAP[comp.component_key]
-    if (!Component) return null
-    return (
-      <div key={comp.id} className="mem-block" data-block={comp.component_key}>
-        <Component memorial={memorial} config={comp.config} media={media} links={links} />
-      </div>
-    )
-  })
+  // In mosaic the video rides inside the photo grid instead of sitting in its
+  // own section below it, so the standalone youtube block is dropped.
+  const inlineVideo = layout === 'mosaic' && links.some((l) => l.kind === 'youtube')
+
+  const blocks = orderForLayout(components, layout)
+    .filter((comp) => !(inlineVideo && comp.component_key === 'youtube'))
+    .map((comp) => {
+      const Component = COMPONENT_MAP[comp.component_key]
+      if (!Component) return null
+      const extra =
+        inlineVideo && comp.component_key === 'gallery_photos'
+          ? { inlineTile: <YouTubeTile links={links} />, inlineAfter: 3 }
+          : {}
+      return (
+        <div key={comp.id} className="mem-block" data-block={comp.component_key}>
+          <Component memorial={memorial} config={comp.config} media={media} links={links} {...extra} />
+        </div>
+      )
+    })
 
   return (
     <div className="min-h-screen bg-warm-bg" data-palette={palette} data-layout={layout}>
@@ -72,7 +82,16 @@ export default function MemorialRenderer({ data }: Props) {
       ) : (
         <>
           <IdentityBlock memorial={memorial} />
-          <div className="mem-flow">{blocks}</div>
+          <div className="mem-flow">
+            {/* A life axis with no years on it is just a list with dots. */}
+            {layout === 'timeline' && (
+              <p className="mem-rail-cap" aria-hidden="true">{memorial.birth_year}</p>
+            )}
+            {blocks}
+            {layout === 'timeline' && (
+              <p className="mem-rail-cap" aria-hidden="true">{memorial.death_year}</p>
+            )}
+          </div>
         </>
       )}
 

@@ -92,7 +92,18 @@ export const SAMPLE_MEDIA: Media[] = TILES.map(([a, b, label], i) => ({
   sort_order: i,
 }))
 
-export const SAMPLE_LINKS: Link[] = []
+// One video so the mosaic layout can show the tile riding inside the photo wall.
+// NOTE: this is a real YouTube embed, so /templates does make a request to
+// Google. That is true of any memorial page with a video, and /legal discloses it.
+export const SAMPLE_LINKS: Link[] = [
+  {
+    id: 'v1',
+    memorial_id: 'sample',
+    kind: 'youtube',
+    label: 'סרטון זיכרון',
+    url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+  },
+]
 
 export const SAMPLE_DATA = {
   memorial: SAMPLE_MEMORIAL,

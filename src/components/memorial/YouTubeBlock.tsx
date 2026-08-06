@@ -9,6 +9,28 @@ function extractYouTubeId(url: string): string | null {
   return match ? match[1] : null
 }
 
+/** The first video, stripped of its section heading, sized to sit in the photo
+ *  grid. Used by the mosaic layout so the wall reads photos, video, photos —
+ *  the standalone YouTubeBlock is suppressed there to avoid showing it twice. */
+export function YouTubeTile({ links }: Props) {
+  const link = links.find((l) => l.kind === 'youtube' && extractYouTubeId(l.url))
+  if (!link) return null
+  const videoId = extractYouTubeId(link.url)!
+
+  return (
+    <div className="w-full h-full rounded-xl overflow-hidden border border-warm-line bg-warm-surface">
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}`}
+        className="w-full h-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        title={link.label || 'סרטון זיכרון'}
+        loading="lazy"
+      />
+    </div>
+  )
+}
+
 export default function YouTubeBlock({ links }: Props) {
   const ytLinks = links.filter((l) => l.kind === 'youtube')
   if (ytLinks.length === 0) return null
